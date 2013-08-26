@@ -1,4 +1,4 @@
-#!/Users/ankit/Code/sec-ner/venv/bin/python
+#!/Users/ankit/Code/pyramid/sec-ner/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==1.4.1','console_scripts','pip'
 __requires__ = 'pip==1.4.1'
 import sys
