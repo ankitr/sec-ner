@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
+import commands
+import logging
 import os
 import sys
+
 from ftplib import FTP
 
 import helpers
 
+logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
+
 def test(server):
+    logging.debug('Running scraping test.')
     connection = FTP(server)
-    connection.login()
-    connection.retrlines('LIST')
+    logging.debug('Connected to server. Testing connection...')
+    logging.debug(connection.retrlines('LIST'))
     sys.stdout.write('FTP Server connection made.\n')
+    logging.debug('Closing connection.')
     connection.close()
 
 def setup(server):
@@ -21,30 +28,12 @@ def setup(server):
     sys.stdout.write('\tPassing connection to state.\n')
 
 def collect_indices(connection):
-    if os.path.exists('./bin/indexes'):
-        if not helpers.query('The \'indexes\' directory already exists. Are you sure you would like to rewrite it?'): sys.exit('Process stopped by user.\n\n')
-        else:
-            status_code = os.system('rm -rf ./bin/indexes')
-            if status_code == 256:
-                sys.stdout.write('Permission to delete directory denied. Sudoing the operation. Administrator password may be required.\n')
-                status_code = os.system('sudo rm -rf ./bin/indexes') 
-            if status_code != 0: sys.exit('Error in creating indexes directory.')
-    sys.stdout.write('Creating indexes. You may need to provide an admin username and password.')
-    status_code = os.system('mkdir ./bin/indexes')
-    if status_code == 256:
-        sys.stdout.write('Permission to create directory denied. Sudoing the operation. Administrator password may be required.\n')
-        status_code = os.system('sudo mkdir ./bin/indexes') 
-    if status_code != 0: sys.exit('Error in creating indexes directory.')
-    if status_code != 0: sys.exit('Error in creating indexes directory.')
-    connection.cwd
-    for filename in ftp.nlst(filematch):
-        if os.path.exists('' + filename) == False:
-            fhandle = open(os.path.join('C:\my_directory', filename), 'wb')
-            print 'Getting ' + filename
-            ftp.retrbinary('RETR ' + filename, fhandle.write)
-            fhandle.close()
-        elif os.path.exists(('C:\my_directory\\' + filename)) == True:
-            print 'File ', filename, ' Already Exists, Skipping Download'            
+    os.cwd('./secner/bin/indexes')
+    status, output = commands.getstatusoutput('wget')
+    if status == 32512: sys.exit('wget (a prerequisite of this program) is not installed. Please install before running again.')
+    sys.stdout.write('Preparing to download the indexes for the server. Depending on your connection this may take a couple hours. DO NOT SEVER THE CONNECTION DURING THIS TIME PERIOD. LEAVE THE MACHINE RUNNING FOR THIS TIME. You should look up lolcatz on Google to pass the time.')
+    logging.info('Starting server initiation.')
+    status, output = commands.getstatusoutput('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
 
 
     sys.exit('We\'re working on making indexes. Until then, look up lolcatz on google.')

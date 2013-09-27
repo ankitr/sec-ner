@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
+import logging
 import sys
 
 from py2neo import neo4j
+
+logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
 
 def test(server):
 	graph = neo4j.GraphDatabaseService(server)

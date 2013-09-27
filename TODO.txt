@@ -1,0 +1,3 @@
+Do some thorough logging
+Comment the codebase
+Figure out if FTP through wget can be boosted by speed

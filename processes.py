@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
+import commands
 import logging
 import os
+import subprocess
 import sys
 import time
 
@@ -11,6 +13,7 @@ import helpers
 import nlp
 import scraping
 
+logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
 
 def test():
     try:
@@ -19,7 +22,6 @@ def test():
         scraping.test(config.SEC_SERVER)
         sys.stdout.write('\n\n\nTests returned positive. All systems ready to go.\n\n\n\n')
     except Exception as e:
-        print e.strerror
         sys.exit('\n\n\nTests returned negative. Check logs for more details. Here\'s the last error:\n"%s"\n\n' % sys.exc_value)
 
 def setup():
@@ -42,7 +44,7 @@ def initialize():
     sys.stdout.write('\n\n')
     graph, ftp_server = setup()
     sys.stdout.write('Setup complete.\n\n\n\n')
-    
+    scraping.collect_indices(ftp_server)
 
 def refresh(): #TODO
     test()
@@ -51,6 +53,6 @@ def refresh(): #TODO
 
 
 def debug():
-    logging.debug('oyouoaufdof')
-    os.chdir('./secner')
-    sys.stdout.write(os.getcwd()+'\n')
+    logging.debug('oyouoaufdof') #TODO setup logging
+    # status, temp = commands.getstatusoutput('touch ./secner/completetest')
+    sys.stdout.write(temp[::-1]+'yolo\n')
