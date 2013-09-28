@@ -7,8 +7,10 @@ import subprocess
 import sys
 import time
 
+import __main__
 import config
 import data
+import debug
 import helpers
 import nlp
 import scraping
@@ -52,7 +54,9 @@ def refresh(): #TODO
     sys.exit('Refresh unprepared for usage.')
 
 
-def debug():
-    logging.debug('oyouoaufdof') #TODO setup logging
+def debugger():
+    __main__.flags.append(1234)
+    logging.debug('different')
+    debug.debug()
     # status, temp = commands.getstatusoutput('touch ./secner/completetest')
-    sys.stdout.write(temp[::-1]+'yolo\n')
+    # sys.stdout.write(temp[::-1]+'yolo\n')

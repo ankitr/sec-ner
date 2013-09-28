@@ -7,6 +7,7 @@ import sys
 
 from ftplib import FTP
 
+import __main__
 import helpers
 
 logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
@@ -31,10 +32,20 @@ def collect_indices(connection):
     os.cwd('./secner/bin/indexes')
     status, output = commands.getstatusoutput('wget')
     if status == 32512: sys.exit('wget (a prerequisite of this program) is not installed. Please install before running again.')
-    sys.stdout.write('Preparing to download the indexes for the server. Depending on your connection this may take a couple hours. DO NOT SEVER THE CONNECTION DURING THIS TIME PERIOD. LEAVE THE MACHINE RUNNING FOR THIS TIME. You should look up lolcatz on Google to pass the time.')
+    sys.stdout.write('Preparing to download the indexes for the server. Depending on your connection this may take a couple hours. DO NOT SEVER THE CONNECTION DURING THIS TIME PERIOD. LEAVE THE MACHINE RUNNING FOR THIS TIME.')
     logging.info('Starting server initiation.')
-    status, output = commands.getstatusoutput('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
-
+    if __main__.inspect: status = os.system('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
+    else:
+        status, output = commands.getstatusoutput('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
+        logging.debug(status)
+        logging.debug(output)
+    if status == 32512:
+        logging.error('wget not installed.')
+        sys.exit('Please install wget before rerunning this process.')
+    elif status == 1024
+    elif status != 0:
+        logging.error('wget failed. Need to clean up indexes.')
+        sys.exit('Critical failure. Run clean before attempting to download again.')
 
     sys.exit('We\'re working on making indexes. Until then, look up lolcatz on google.')
     # filenames = connection.nlst()
