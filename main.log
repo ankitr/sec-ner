@@ -384,3 +384,90 @@ DEBUG:root:Checking for wget...
 DEBUG:root:wget is installed.
 INFO:root:Starting server initiation.
 CRITICAL:root:wget failed. Need to clean up indexes.
+INFO:root:Initializing system.
+DEBUG:root:Running system tests.
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET / {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '100', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET /db/data/ {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '735', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:root:Running scraping test.
+DEBUG:root:Connected to server. Testing connection...
+DEBUG:root:226 Transfer complete
+DEBUG:root:Closing connection.
+DEBUG:root:Tests cleared.
+DEBUG:root:Requesting init permissions
+DEBUG:root:Recieved permission to continue. Running emergency shutdown buffer.
+DEBUG:root:Running process setup.
+DEBUG:root:Changing working directory.
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET /db/data/ {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '735', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:py2neo.rest:Encoding request body as JSON
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:POST /db/data/batch {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (226 bytes)
+DEBUG:py2neo.rest:Request body: [{"body":{"query":"START r=rel(*) DELETE r"},"to":"http://localhost:7474/db/data/cypher","id":0,"method":"POST"},{"body":{"query":"START n=node(*) DELETE n"},"to":"http://localhost:7474/db/data/cypher","id":1,"method":"POST"}]
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'transfer-encoding': 'chunked', 'access-control-allow-origin': '*', 'content-type': 'application/json; charset=UTF-8', 'server': 'Jetty(6.1.25)'}
+DEBUG:root:Setting up FTP connections.
+DEBUG:root:Connected to server.
+DEBUG:root:Setup complete.
+DEBUG:root:Collecting indexes.
+DEBUG:root:Checking if indexes directory exists.
+DEBUG:root:indexes directory exists. Asking for permission to remove.
+ERROR:root:User permission not granted to remove indexes directory.
+INFO:root:Initializing system.
+DEBUG:root:Running system tests.
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET / {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '100', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET /db/data/ {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '735', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:root:Running scraping test.
+DEBUG:root:Connected to server. Testing connection...
+DEBUG:root:226 Transfer complete
+DEBUG:root:Closing connection.
+DEBUG:root:Tests cleared.
+DEBUG:root:Requesting init permissions
+DEBUG:root:Recieved permission to continue. Running emergency shutdown buffer.
+DEBUG:root:Running process setup.
+DEBUG:root:Changing working directory.
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:GET /db/data/ {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (no data)
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'content-length': '735', 'content-type': 'application/json; charset=UTF-8', 'access-control-allow-origin': '*', 'server': 'Jetty(6.1.25)'}
+DEBUG:py2neo.rest:Encoding request body as JSON
+DEBUG:py2neo.rest:Establishing http connection to localhost:7474
+DEBUG:py2neo.rest:Sending request
+INFO:py2neo.rest:POST /db/data/batch {'Host': 'localhost:7474', 'Content-Type': 'application/json', 'X-Stream': 'true;format=pretty', 'Accept': 'application/json', 'User-Agent': 'py2neo/1.5.1 (darwin; python/2.7.5)'} (226 bytes)
+DEBUG:py2neo.rest:Request body: [{"body":{"query":"START r=rel(*) DELETE r"},"to":"http://localhost:7474/db/data/cypher","id":0,"method":"POST"},{"body":{"query":"START n=node(*) DELETE n"},"to":"http://localhost:7474/db/data/cypher","id":1,"method":"POST"}]
+DEBUG:py2neo.rest:Awaiting response
+INFO:py2neo.rest:200 OK {'transfer-encoding': 'chunked', 'access-control-allow-origin': '*', 'content-type': 'application/json; charset=UTF-8', 'server': 'Jetty(6.1.25)'}
+DEBUG:root:Setting up FTP connections.
+DEBUG:root:Connected to server.
+DEBUG:root:Setup complete.
+DEBUG:root:Collecting indexes.
+DEBUG:root:Checking if indexes directory exists.
+DEBUG:root:indexes directory exists. Asking for permission to remove.
+DEBUG:root:indexes directory removed successfully.
+DEBUG:root:Making indexes directory.
+DEBUG:root:New indexes directory created successfully.
+DEBUG:root:Moving to indexes directory.
+DEBUG:root:Checking for wget...
+DEBUG:root:wget is installed.
+INFO:root:Starting server initiation.
+CRITICAL:root:wget failed. Need to clean up indexes.
