@@ -46,7 +46,7 @@ def initialize():
     logging.info('Initializing system.')
     test()
     logging.debug('Requesting init permissions')
-    if not helpers.query('Would you like to initiate the process?'): sys.exit('Process stopped by user.')
+    if not helpers.query('Would you like to initiate the process?', default='yes'): sys.exit('Process stopped by user.')
     if not helpers.query('This action will erase all content on your Neo4j server. Are you sure you would like to continue?'): sys.exit('Process stopped by user.')
     logging.debug('Recieved permission to continue. Running emergency shutdown buffer.')
     sys.stdout.write('Starting')
