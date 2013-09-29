@@ -58,7 +58,7 @@ def initialize():
     graph, ftp_server = setup()
     logging.debug('Setup complete.')
     sys.stdout.write('Setup complete.\n\n\n\n')
-    scraping.collect_indices(ftp_server)
+    scraping.collect_indexes(ftp_server)
 
 def refresh(): #TODO
     test()
