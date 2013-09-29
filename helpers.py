@@ -32,6 +32,8 @@ def query(question, default="no"):
             sys.stdout.write("Please respond with 'yes' or 'no' "\
                              "(or 'y' or 'n').\n")
 
+# TODO: setup a command line function that takes care of common errors.
+
 # """
 # ftpwalk -- Walk a hierarchy of files using FTP (Adapted from os.walk()).
 # """

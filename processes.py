@@ -17,6 +17,8 @@ import scraping
 
 logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
 
+
+# Process Tools
 def test():
     logging.debug('Running system tests.')
     try:
@@ -31,6 +33,7 @@ def test():
 
 def setup():
     logging.debug('Running process setup.')
+    logging.debug('Changing working directory.')
     os.chdir('./secner')
     graph = data.setup(config.NEO4J_SERVER)
     ftp_server = scraping.setup(config.SEC_SERVER)
@@ -38,6 +41,7 @@ def setup():
     return graph, ftp_server
 
 
+# Commands
 def initialize():
     logging.info('Initializing system.')
     test()
@@ -52,6 +56,7 @@ def initialize():
         time.sleep(0.75)
     sys.stdout.write('\n\n')
     graph, ftp_server = setup()
+    logging.debug('Setup complete.')
     sys.stdout.write('Setup complete.\n\n\n\n')
     scraping.collect_indices(ftp_server)
 
@@ -60,6 +65,12 @@ def refresh(): #TODO
     if not helpers.query('Would you like to initiate the process?'): sys.exit('Process stopped by user')
     sys.exit('Refresh unprepared for usage.')
 
+def cleanup():
+    """For use when an emergency problem causes an unsafe shutdown. Clears out system files and returns to a stable state."""
+    logging.info('Cleaning up system.')
+    logging.debug('Changing working directory.')
+    os.chdir('./secner')
+    status = os.system('rm -rf ./bin/indexes/*')
 
 def debugger():
     __main__.flags.append(1234)

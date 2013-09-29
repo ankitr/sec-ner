@@ -31,11 +31,41 @@ def setup(server):
     sys.stdout.write('\tFTP server connection made.\n')
     sys.stdout.write('\tPassing connection to state.\n')
 
-def collect_indices(connection):
+def collect_indexes(connection):
+    """Collects the indexes from the SEC server for processing over. Should be used for initialization."""
+    logging.debug('Collecting indexes.')
+    logging.debug('Checking if indexes directory exists.')
+    if os.path.exists('./bin/indexes'):
+        logging.debug('indexes directory exists. Asking for permission to remove.')
+        if helpers.query('The indexes directory already exists. Would you like to remove it?'):
+            status = os.system('rm -rf ./bin/indexes')
+            if status == 256:
+                logging.error('User is not authorized to delete indexes.')
+                sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)' % (' inspect' if __main__.inspect else str()))
+            elif status != 0:
+                logging.error('Something went wrong while removing the indexes directory.')
+                sys.exit('Something went wrong while removing the indexes directory.')
+            logging.debug('indexes directory removed successfully.')
+        else:
+            logging.error('User permission not granted to remove indexes directory.')
+            sys.exit('Process stopped by user.')
+    else: logging.debug('indexes directory does not exist. Proceeding normally.')
+    status = os.system('mkdir ./bin/indexes')
+    if status == 256:
+        logging.error('User is not authorized to create an indexes directory.')
+        sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)' % (' inspect' if __main__.inspect else str()))
+    elif status != 0:
+        logging.error('Something went wrong while creating the indexes directory.')
+        sys.exit('Something went wrong while creating the indexes directory.')
+    logging.debug('New indexes directory created successfully.')
+    logging.debug('Moving to indexes directory')
     os.chdir('./bin/indexes')
     logging.debug('Checking for wget...')
     status, output = commands.getstatusoutput('wget')
-    if status == 32512: sys.exit('wget (a prerequisite of this program) is not installed. Please install before running again.')
+    if status == 32512:
+        logging.debug('wget is not installed.')
+        sys.exit('wget (a prerequisite of this program) is not installed. Please install before running again.')
+    logging.debug('wget is installed.')
     sys.stdout.write('Preparing to download the indexes for the server. Depending on your connection this may take a couple hours. DO NOT SEVER THE CONNECTION DURING THIS TIME PERIOD. LEAVE THE MACHINE RUNNING FOR THIS TIME.')
     logging.info('Starting server initiation.')
     if __main__.inspect: status = os.system('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
@@ -43,14 +73,14 @@ def collect_indices(connection):
         status, output = commands.getstatusoutput('wget -r ftp://ftp.sec.gov/edgar/daily-index/*')
         logging.debug(status)
         logging.debug(output)
-    if status == 32512:
-        logging.error('wget not installed.')
-        sys.exit('Please install wget before rerunning this process.')
-    elif status == 1024:
+    if status == 1024:
         logging.error('Unable to connect to the server from wget.')
         sys.exit('wget failed to connect with the server. Please check your network connection or try again later.')
+    elif status == 256:
+        logging.error('Permission denied to copy indexes.')
+        sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)' % (' inspect' if __main__.inspect else str()))
     elif status != 0:
-        logging.error('wget failed. Need to clean up indexes.')
+        logging.critical('wget failed. Need to clean up indexes.')
         sys.exit('Critical failure. Run clean before attempting to download again.')
 
     sys.exit('We\'re working on making indexes. Until then, look up lolcatz on google.')
