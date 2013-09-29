@@ -15,6 +15,7 @@ logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
 def test(server):
     logging.debug('Running scraping test.')
     connection = FTP(server)
+    connection.login()
     logging.debug('Connected to server. Testing connection...')
     logging.debug(connection.retrlines('LIST'))
     sys.stdout.write('FTP Server connection made.\n')
@@ -22,14 +23,17 @@ def test(server):
     connection.close()
 
 def setup(server):
+    logging.debug('Setting up FTP connections.')
+    sys.stdout.write('Setting up FTP systems...\n')
     connection = FTP(server)
     connection.login()
-    sys.stdout.write('Setting up FTP systems...\n')
+    logging.debug('Connected to server.')
     sys.stdout.write('\tFTP server connection made.\n')
     sys.stdout.write('\tPassing connection to state.\n')
 
 def collect_indices(connection):
-    os.cwd('./secner/bin/indexes')
+    os.chdir('./bin/indexes')
+    logging.debug('Checking for wget...')
     status, output = commands.getstatusoutput('wget')
     if status == 32512: sys.exit('wget (a prerequisite of this program) is not installed. Please install before running again.')
     sys.stdout.write('Preparing to download the indexes for the server. Depending on your connection this may take a couple hours. DO NOT SEVER THE CONNECTION DURING THIS TIME PERIOD. LEAVE THE MACHINE RUNNING FOR THIS TIME.')
@@ -42,7 +46,9 @@ def collect_indices(connection):
     if status == 32512:
         logging.error('wget not installed.')
         sys.exit('Please install wget before rerunning this process.')
-    elif status == 1024
+    elif status == 1024:
+        logging.error('Unable to connect to the server from wget.')
+        sys.exit('wget failed to connect with the server. Please check your network connection or try again later.')
     elif status != 0:
         logging.error('wget failed. Need to clean up indexes.')
         sys.exit('Critical failure. Run clean before attempting to download again.')
