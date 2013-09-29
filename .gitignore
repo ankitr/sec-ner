@@ -34,5 +34,8 @@ nosetests.xml
 .project
 .pydevproject
 
-# Directories
+# Logs
+.log
+
+# Files and Directories
 bin/indexes/
