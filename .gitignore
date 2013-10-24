@@ -51,6 +51,5 @@ nosetests.xml
 *.log
 
 # Files and Directories
-main.log
 bin/indexes/
 bin/tests/
