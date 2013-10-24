@@ -10,7 +10,9 @@ __version__ = 'v0.0.1'
 COMMANDS = {
     'init':'initialize',
     'refresh':'refresh',
-    'debug':'debugger'
+    'debug':'debugger',
+    'clean':'clean',
+    'clrlog':'clear_logs'
 }
 
 # Globals
