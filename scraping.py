@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import commands
 import gzip
 import logging
 import os
