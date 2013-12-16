@@ -4,6 +4,7 @@
 #import ftputil
 import logging
 import os
+import re
 import sys
 
 logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
@@ -35,4 +36,12 @@ def query(question, default='yes'):
         else:
             sys.stdout.write('Please respond with \'yes\' or \'no\' (or \'y\' or \'n\').\n')
 
-# TODO: setup a command line function that takes care of common errors.
+def find(dregex, fregex, top='.'):
+    dmatcher = re.compile(dregex)
+    fmatcher = re.compile(fregex)
+    for dirpath, dirnames, filenames in os.walk(top):
+        d = os.path.relpath(dirpath, top)
+        if not dmatcher.match(d): continue
+        for f in filenames:
+            if fmatcher.match(f):
+                yield os.path.join(d, f)
