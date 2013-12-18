@@ -34,7 +34,7 @@ def query(question, default='yes'):
         if default is not None and choice == '': return valid[default]
         elif choice in valid: return valid[choice]
         else:
-            sys.stdout.write('Please respond with \'yes\' or \'no\' (or \'y\' or \'n\').\n')
+            print('Please respond with \'yes\' or \'no\' (or \'y\' or \'n\').')
 
 def find(dregex, fregex, top='.'):
     dmatcher = re.compile(dregex)
@@ -45,3 +45,15 @@ def find(dregex, fregex, top='.'):
         for f in filenames:
             if fmatcher.match(f):
                 yield os.path.join(d, f)
+
+def error(message):
+    logging.error(message)
+    sys.exit(message+'\n')
+
+def out(message):
+    logging.debug(message)
+    print(message)
+
+def permit(permission):
+    if not query(permission):
+        error('User stopped process.')

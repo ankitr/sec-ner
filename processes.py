@@ -11,9 +11,10 @@ import __main__
 import config
 import data
 import debug
-import helpers
 import nlp
 import scraping
+
+from helpers import *
 
 logging.basicConfig(filename='./secner/main.log', level=logging.DEBUG)
 
@@ -26,13 +27,13 @@ def test():
         nlp.test()
         scraping.test(config.SEC_SERVER)
         logging.debug('Tests cleared.')
-        sys.stdout.write('\n\n\nTests returned positive. All systems ready to go.\n\n\n\n')
+        print('\n\n\nTests returned positive. All systems ready to go.\n\n\n')
     except:
         logging.error('System tests returned negative.')
         logging.debug(type(sys.exc_type))
         logging.debug(str(sys.exc_type))
         logging.error('%s:%s' % (sys.exc_type, sys.exc_value))
-        sys.exit('\n\n\nTests returned negative. Check logs for more details. Here\'s the last error:\n"%s:%s"\n\n' % (sys.exc_type, sys.exc_value))
+        sys.exit('Tests returned negative. Check logs for more details.')
 
 def setup():
     logging.debug('Running process setup.')
@@ -49,40 +50,23 @@ def initialize():
     logging.info('Initializing system.')
     test()
     logging.debug('Requesting init permissions')
-    if not helpers.query('Would you like to initiate the process?'):
-        logging.debug('User did not permit running the service.')
-        sys.exit('Process stopped by user.')
-    if not helpers.query('This action will erase all content on your Neo4j server. Are you sure you would like to continue?'):
-        logging.debug('User did not give permission to delete Neo4j content.')
-        sys.exit('Process stopped by user.')
-    logging.debug('Recieved permission to continue. Running emergency shutdown buffer.')
-    sys.stdout.write('Starting')
-    for i in range(5):
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        time.sleep(0.75)
-    sys.stdout.write('\n\n')
+    permit('Would you like to initiate the process?')
+    permit('This action will erase all content on your Neo4j server. Would you like to continue?')
+    out('Starting setup.')
     graph, ftp_server = setup()
-    logging.debug('Setup complete.')
-    sys.stdout.write('Setup complete.\n\n\n\n')
+    out('Setup complete.')
     scraping.initiate_indexes(ftp_server)
     #TODO: Run NLP
 
 def reinitialize():
-    logging.info('Reinitializing system.')
-    stdout('REINITIALIZING SYSTEM\n\n\n')
+    out('REINITIALIZING SYSTEM\n\n')
     test()
     logging.debug('Requesting init permissions')
-    if not helpers.query('Would you like to initiate the process?'):
-        logging.debug('User did not permit running the service.')
-        sys.exit('Process stopped by user.')
-    if not helpers.query('This action will erase all content on your Neo4j server. Are you sure you would like to continue?'):
-        logging.debug('User did not give permission to delete Neo4j content.')
-        sys.exit('Process stopped by user.')
+    permit('This action will erase all content on your Neo4j server. Are you sure you would like to continue?')
 
 def refresh(): #TODO
-    logging.info('Refreshing.')
-    test()
+    # logging.info('Refreshing.')
+    # test()
     sys.exit('Refresh unprepared for usage.')
 
 def clean_up():
@@ -91,7 +75,8 @@ def clean_up():
     logging.debug('Changing working directory.')
     os.chdir('./secner/bin/')
     logging.debug('Requesting permission to continue.')
-    if not helpers.query('Note that running this proccess will result in deletion of potentially valuable content. Are you absolutely sure you would wish to proceed?'):
+    permission = helpers.query('Note that running this proccess will result in deletion of potentially valuable content. Are you absolutely sure you would wish to proceed?')
+    if not permission:
         logging.debug('User did not permit running the service.')
         sys.exit('Process stopped by user.')
     logging.debug('Permission recieved. Continuing with process.')
@@ -99,30 +84,26 @@ def clean_up():
         logging.debug('Clearing indexes.')
         status = os.system('rm -rf ./indexes/')
         if status == 256:
-            logging.error('User is not authorized to clear indexes.')
-            sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)\n' % (' inspect' if __main__.inspect else str()))
+            error('Permission denied.')
         elif status != 0:
-            logging.error('Something went wrong while clearing the indexes directory.')
-            sys.exit('Something went wrong while clearing the indexes directory.\n')
+            error('Something went wrong.')
     if os.path.exists('./tests/'):
         logging.debug('Clearing tests.')
         status = os.system('rm -rf ./tests/*')
         if status == 256:
-            logging.error('User is not authorized to clear tests.')
-            sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)\n' % (' inspect' if __main__.inspect else str()))
+            error('Permission denied.')
         elif status != 0:
-            logging.error('Something went wrong while clearing the tests directory.')
-            sys.exit('Something went wrong while clearing the tests directory.\n')
+            error('Something went wrong.')
     if os.path.exists('./.secner-helpers/'):
         logging.debug('Clearing secner-helpers.')
         status = os.system('rm -rf ./secner-helpers/*')
         if status == 256:
-            logging.error('User is not authorized to clear secner-helpers.')
-            sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)\n' % (' inspect' if __main__.inspect else str()))
+            error('Permission denied.')
         elif status != 0:
-            logging.error('Something went wrong while clearing the secner-helpers directory.')
-            sys.exit('Something went wrong while clearing the secner-helpers directory.\n')
-    try: data.clean(config.NEO4J_SERVER)
+            error('Something went wrong.')
+    try:
+        logging.debug('Clearing Neo4j Server.')
+        data.clean(config.NEO4J_SERVER)
     except:
         logging.error('Something went wrong while clearing the Neo4j server.')
         logging.exception(sys.exc_type+':'+sys.exc_value)
@@ -133,11 +114,11 @@ def clean_up():
 def clear_logs():
     """Clears the logs to open up space"""
     logging.info('Clearing logs.')
-    sys.stdout.write('Clearing logs.')
+    print('Clearing logs.')
     status = os.system('rm ./secner/main.log')
     if status == 256:
         logging.error('User is not authorized to delete logs.')
-        sys.exit('Permission denied. Please run from a super user state. (Maybe sudo python secner [command]%s if you\'re an admin)\n' % (' inspect' if __main__.inspect else str()))
+        sys.exit('Permission denied.')
     elif status != 0:
         logging.error('Something went wrong while creating the indexes directory.')
         sys.exit('Something went wrong while creating the indexes directory.\n')
@@ -149,4 +130,4 @@ def debugger():
     __main__.flags.append(1234)
     logging.debug('different')
     # status, temp = commands.getstatusoutput('touch ./secner/completetest')
-    # sys.stdout.write(temp[::-1]+'yolo\n')
+    # print(temp[::-1]+'yolo\n')
